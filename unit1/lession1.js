@@ -12,7 +12,7 @@ function demoVar(){
 
     console.log("outside block : ", x); // still accessible
 }
-
+// console.log('outside function: ', x); -> because this is outside function and var is function scoped
 demoVar();
 
 /* 
@@ -42,4 +42,23 @@ const PI = 3.14;
 const person = {name : "sunny"};
 person.name = "rahul"; // works
 console.log(person.name);
+
+// Hoisting & Temporal Dead Zone (TDZ)
+
+// Hoisting: JavaScript moves variable declarations to the top of the scope during compilation.
+// var variables are hoisted and initialized as undefined.
+
+
+// TDZ: let and const are hoisted but not initialized — accessing them before declaration throws an error.
+
+console.log(a); // undefined
+var a = 5;
+
+// console.log(b); // ❌ ReferenceError
+let b = 10;
+
+const arr = [1, 2, 3];
+arr.push(4);
+
+console.log(arr);
 
