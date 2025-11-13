@@ -1,0 +1,64 @@
+Topic: React Installation, Environment Setup, Folder Structure, and JSX
+
+1. what you need before starting => Node.js and npm (node package manager)
+
+check if it is installed or not => nove -v, npm -v => if both show version number then it's good other wise download it from https://nodejs.org => it automatically install npm with it
+
+2. setting up a react app => react app can be created in two ways
+
+option 1 => using 'create react app' (CRA) => best for beginners simple set up
+
+npx create-react-app my-react-app => run this in terminal
+after that => cd my-react-app
+npm start
+
+
+Your app opens at http://localhost:3000
+
+Option 2: Using Vite (Faster Build Tool) => Preferred for modern development — faster and lighter.
+
+npm create vite@latest my-vite-app
+✔ Select a framework: › React
+✔ Select a variant: › JavaScript
+cd my-vite-app
+npm install
+npm run dev
+
+Opens at http://localhost:5173
+
+3️⃣ Folder Structure (Explained)
+Let’s break down a React project’s core folders/files.
+
+| File / Folder           | Purpose                                                                    |
+| ----------------------- | -------------------------------------------------------------------------- |
+| `main.jsx` / `index.js` | The **entry point** of your app. It tells React which component to render. |
+| `App.jsx`               | Your main/root component. Every other component gets nested inside it.     |
+| `components/`           | (You’ll create this) Folder for reusable UI parts (buttons, cards, etc.)   |
+| `assets/`               | For images, icons, etc.                                                    |
+
+📁 public/ folder
+
+Contains static assets like index.html.
+React apps render everything inside a single HTML file — that’s how SPAs work.
+
+⚙️ package.json
+
+Stores metadata and all your dependencies:
+
+{
+  "name": "my-react-app",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}
+
+
+
+
