@@ -1,0 +1,10 @@
+event handling in react => react events work very similar to DOM events, but with important difference.
+
+--- by the end of this lesson you will understand ---
+1. how to handle events in react
+2. difference between react events and normal DOM events
+3. passing argument to event handlers
+4. inline handlers vs function handlers
+5. event object(e)
+6. binding issues in class components
+

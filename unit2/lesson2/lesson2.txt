@@ -1,0 +1,77 @@
+--- styling in react(inline, CSS, Modules, Tailwind) ---
+
+1. inline styling(Style Attribute) => Inline CSS in React uses JS objects, not strings.
+
+function Box() {
+  const boxStyle = {
+    backgroundColor: "skyblue",
+    padding: "20px",
+    borderRadius: "10px",
+  };
+
+  return <div style={boxStyle}>This is a box</div>;
+}
+
+export default Box;
+
+Rules:-
+CSS properties become camelCase
+background-color => backgroundColor
+font-size => fontSize
+
+values are usually strings
+
+2. CSS stylesheets(External CSS) => this is same as commone css, but scopped globally
+
+--- App.css ---
+.title {
+  color: tomato;
+  font-size: 30px;
+}
+
+--- App.jsx ---
+import './App.css';
+
+function App() {
+  return <h1 className="title">Hello CSS!</h1>;
+}
+
+
+pros => simple, common for small and medium project
+cons => styles can leak across components (global scope)
+
+3. css Modules(most recommended for component styling) => CSS Modules create component-scoped CSS, meaning styles never leak.
+
+
+
+
+
+5. tailwindCSS (super important today) => tailwind is utility-first CSS framework -> no need to write css file
+
+--- card.jsx ---
+function Card() {
+  return (
+    <div className="p-4 bg-blue-500 text-white rounded-xl shadow-lg">
+      TailwindCSS is working!
+    </div>
+  );
+}
+
+--- tailwind gives you utility classes for ---
+spacing(p-4, m-6)
+colors(bg-red-500)
+text(text-xl)
+layout(flex, grid)
+borders(rounded-lg)
+shadows(shadow-lg)
+and lots more
+
+6. which styling method should you use ?
+inline styles -> very small styles or dynammic styling
+css stylesheets -> small app and quick works
+css Modules -> medium-large apps(best clean structure)
+tailwindCSS -> professional apps(fastest UI development)
+styled components -> when you want javascript-powered css
+
+
+

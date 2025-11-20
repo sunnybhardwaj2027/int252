@@ -1,0 +1,117 @@
+Topic: Components in React (Functional & Class Components) + Virtual DOM + Props
+
+1. what is Component => think of Component as a reusable building blocks of our app. each Component controls it's own structure, style and behaviour
+
+example in an ecommerce website => Header -> productCard -> cart -> footer => each is a seperate react Component
+
+# component can be of two types 
+1. functional Components(modern -- recommended)
+2. class Components(old -- still found in legacy code)
+
+#functional components => a functional component is a simple javascript functoin that return jsx
+
+function Welcome() {
+  return <h1>Hello Sunny 👋</h1>;
+}
+
+export default Welcome;
+
+** modern react component often use arrow function
+const Welcome = () => <h1>Hello sunny</h1>
+
+3. class components => before hooks (react < 16.8), react used class based components to manage state and lifecycle methods
+
+.. ClassComponent.jsx
+
+import React, { Component } from 'react';
+
+class Welcome extends Component {
+  render() {
+    return <h1>Hello from Class Component 👋</h1>;
+  }
+}
+
+export default Welcome;
+
+.. main.jsx
+
+import Welcome from './Welcome';
+function App() {
+  return <Welcome />;
+}
+
+4. Virtual DOM => react's superpower
+what's is DOM => document object model => browser's representation of UI tree => upadating it directly(via vanilla js) is slow.
+
+what react does ?
+1. react maintains a Virtual DOM(a lightweight JS copy of real DOM)
+2. when state or props change -> react creates a new Virtual DOM.
+3. react compares new Virtual DOM with old one (diffing algorithm)
+4. it updates the only changed elements in the real DOM.
+
+example(conceptual)
+old UI: <p>Sunny</p>
+new UI: <P>Rahul</p>
+=> react detects the only the text node changed not the <p> tag and updates just that part in real DOM => that's why react feels instant and smooth
+
+5. props => passing data between components
+props => properties =>  inputs to a component => they make components dynammic and reusable
+
+..Greeting.jsx..
+function Greeting(props) {
+  return <h2>Hello, {props.name}!</h2>;
+}
+
+export default Greeting;
+
+..App.jsx..
+import Greeting from './Greeting';
+
+function App() {
+  return (
+    <div>
+      <Greeting name="Sunny" />
+      <Greeting name="Riya" />
+      <Greeting name="Karan" />
+    </div>
+  );
+}
+
+export default App;
+
+example 2: destructuring props(cleaner syntax)
+
+..Greeting.jsx..
+function Greeting({ name, course }) {
+  return <p>{name} is enrolled in {course}</p>;
+}
+
+..main.jsx..
+<Greeting name="Sunny" course="B.Tech (CSE)" />
+
+example 3: props in class component
+Class Greeting extends React.component {
+  render(
+    return <h1>Hello, {this.props.name}</h1>
+  )
+}
+
+..main.jsx..
+<Greeting name="sunny" />
+
+--- practive excercise ---
+
+function UserCard({ name, age, course }) {
+  return (
+    <div style={{ border: '1px solid gray', margin: '10px', padding: '10px' }}>
+      <h3>{name}</h3>
+      <p>Age: {age}</p>
+      <p>Course: {course}</p>
+    </div>
+  );
+}
+
+export default UserCard;
+
+
+
