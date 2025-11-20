@@ -8,3 +8,96 @@ event handling in react => react events work very similar to DOM events, but wit
 5. event object(e)
 6. binding issues in class components
 
+event handling in HTML vs react
+
+--- traditional HTML ---
+<button onclick="alert('clicked!')>clikc me</button>
+
+--- react version ---
+<button onClick={() => alert("clicked")}> click me</button>
+
+2. --- react event naming rules ---
+react uses -> camelCase event names
+. onClick .onChange . onSubmit . onMouseEnter
+handler is always a function not a string
+
+--- wrong ---
+<button onClick="alert('Hi')">Click</button>
+
+--- correct ---
+<button onClick={() => alert("Hi")}>Click</button>
+
+3. Basic event handlers
+--- inline ---
+<button onClick={() => console.log("Button clicked!")}>
+  Click
+</button>
+
+
+--- using a function ---
+function App() {
+  function handleClick() {
+    console.log("Clicked!");
+  }
+
+  return <button onClick={handleClick}>Click</button>;
+}
+
+
+4. passing aruguments to event handlers
+
+--- wrong approach --
+<button onClick={handleClick(5)}>Click</button> -> runs immediately before button is clicked
+
+--- correct -> use an arrow function 
+<button onClick={() => handleClick(5)}>click</button>
+
+--- handler defination ---
+function handleClick(num) {
+  console.log("Value is:", num);
+}
+
+
+5. event object (e) in react => react gives a SyntheticEvent, not a DOM event
+
+function App() {
+  function handleInput(e) {
+    console.log(e.target.value);
+  }
+
+  return <input type="text" onChange={handleInput} />;
+}
+
+7. common react events
+onclick => button, div etc..
+onChange  => Form fields(input, select)
+onSubmit => Form onSubmit
+onMouseEnter / onMouseLeave => hover
+onKeyDown, onKeyUp => keyboard events
+onFocus, onBlur => input focus events
+
+example => button click counter
+
+import { useState } from "react";
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  function increment() {
+    setCount(count + 1);
+  }
+
+  return (
+    <div>
+      <h2>Count: {count}</h2>
+      <button onClick={increment}>Increase</button>
+    </div>
+  );
+}
+
+export default Counter;
+
+
+
+
+

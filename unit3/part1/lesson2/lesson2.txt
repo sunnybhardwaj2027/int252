@@ -1,0 +1,98 @@
+State in React | Stateless vs Stateful Components
+
+--- by the end of this lesson you will understand ---
+1. what state is in react
+2. How useState() works
+3. difference between stateless and stateful components
+4. why react re-renders when state changes
+5. rules of react
+6. updating state correctly(very important)
+
+1. what is state => data that changes over time and affects what React shows on the screen
+
+Example of state:-
+. a counter value 
+. a login status
+. a toggle (dark mode on/off)
+. text typed in input field
+. API data(users/products)
+. whether a model is open
+whenever state changes, react automatically re-renders the component.
+
+2. useState() -> the hook that creates state
+you create state using
+const [value, setValue] = useState(initialValue);
+
+Example:-
+const [count, setCount] = useState(initialValue;
+
+count -> current state value
+setCount -> function to update state
+0 -> initialValue
+
+3. example => counter component
+
+import { useState } from "react";
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <>
+      <h1>Count: {count}</h1>
+      <button onClick={() => setCount(count + 1)}>Increase</button>
+    </>
+  );
+}
+
+export default Counter;
+
+--- everytime you click the button ->react updates the states ->  re-renders the component -> Updates UI ---
+
+
+4. stateless vs stateful component
+
+--- stateless component -> a component that does not hold state ---
+example:-
+
+function Heading() {
+  return <h1>Hello Sunny</h1>;
+}
+
+it always return the same value
+--- stateful component -> a component that has State ---
+
+example:-
+function Counter() {
+  const [count, setCount] = useState(0);
+  return <h1>{count}</h1>;
+}
+
+its output change based on state
+
+5. why does state cause re-renders => because react follows a simple rule => when state changes, react re-renders the component   
+
+example:-
+setCount(count + 1);
+
+after this, react:-
+1. updates value of count
+2. calls the component function again 
+3. updates the JSX on screen
+
+this is react is declarative -> you describe what the UI should look like, and react handles the rest.
+
+6. very Important: state is asynchronous 
+
+this will not work 
+setCount(count + 1);
+console.log(count); // ❌ old value, not updated yet
+
+Reason: React batches state updates.
+To reliably update based on previous state:
+
+correct way 
+setCount((prev) => prev+1);
+
+7. initial state types => state can be
+
