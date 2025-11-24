@@ -1,0 +1,46 @@
+useState -> state for functional component
+
+what it is => create local states for component. returns [state, setState]
+
+--- signature ---
+const [value, setValue] = useState(initialvalue);
+
+--- key ideas ---
+1.  'initialvalue' is used only on first render
+2.  'setValue' replaces the state value (for primitives/objects you must provide a new object to avoid mutation issues).
+3. states may be batched and asynchronous --- reading value immediately after setValue will yield the old value in the same render tick.
+4. for updates that depends on previous state, pass a functional upadater. setValue(prev => prev+1)
+
+Example: counter => simple
+
+function Counter() {
+    const [count, setCount] = useState(count);
+
+    return (
+        <button onClick={() => setCount(c =>K c+1)}>count : {count}</button>
+    )
+}
+
+object state -> avoid mutation
+
+const [user, setUser] = useState({ name : "sunny", age : 22});
+// correct => create new object
+setUser(prev => {...prev, age : prev.age+1});
+
+// incorrect => mutating prev will not trigger re-render relaibly
+prev.age = prev.age+1;
+setUser(prev);
+
+
+--- Lazy initial state (expensive computation only once) ---
+const [data, setData] = useState(() => expensiveInit());
+
+--- common mistakes ---
+1. mutating state directly (array/objects) -> react may not detect changes
+2. Using count + 1 inside rapid events — use setCount(c => c + 1) to avoid stale closure.
+3. Passing a promise or non-serializable values in state may be okay but can complicate debugging; keep state simple.
+
+--- when to use ---
+Local UI state (form inputs, toggles, counters).
+Prefer useReducer for complex state transitions.
+

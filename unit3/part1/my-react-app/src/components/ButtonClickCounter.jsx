@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function ButtonClickCounter(){
     const [count, setCount] = useState(0);
@@ -6,6 +6,16 @@ function ButtonClickCounter(){
     function increment(){
         setCount(count+1);
     }
+
+    useEffect(() => {
+        console.log(`count changed : ${count}`);
+    }, [count]);
+
+    useEffect(() => {
+       return () => {
+        console.log("component removed!");
+       }
+    }, []);
 
     return (
         <div>

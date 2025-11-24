@@ -24,7 +24,7 @@ you create state using
 const [value, setValue] = useState(initialValue);
 
 Example:-
-const [count, setCount] = useState(initialValue;
+const [count, setCount] = useState(initialValue);
 
 count -> current state value
 setCount -> function to update state
@@ -86,7 +86,7 @@ this is react is declarative -> you describe what the UI should look like, and r
 
 this will not work 
 setCount(count + 1);
-console.log(count); // ❌ old value, not updated yet
+console.log(count); // old value, not updated yet
 
 Reason: React batches state updates.
 To reliably update based on previous state:
@@ -95,4 +95,45 @@ correct way
 setCount((prev) => prev+1);
 
 7. initial state types => state can be
+number => useState(0)
+string => useState("")
+boolean => useState(true)
+array => useState([])
+object => useState({ name:"", age: 0 })
+
+
+example :-
+const [user, setUser] = useState({ name: "Sunny", age: 21 });
+
+8. example:- updating react state
+
+--- wrong ---
+user.name = "Rahul" -> react will not re-render
+
+--- correct ---> using spread operator
+setUser({...user, name : "rahul"})
+
+9. example:- updating array size
+--- wrong ---
+list.push("new item");
+setList(list);
+-> this mutates the array -> react will not re-render
+
+--- correct ---
+setList([...list, "new item"]);
+
+*** rules of state(very important) ***
+1. never change state directly => always use the setter function(setCount, setUser, ...)
+2. don't put everything in state => keep it minimal
+3. state updates may be asynchronous
+4. state is isolated per component
+5. changing state triggers re-render
+
+--- Summary ---
+state => data that changes & updates UI
+stateless component => no state
+statefull component => has state
+useState => hooks to create state
+state triggers re-renders => automatic UI Updates
+
 

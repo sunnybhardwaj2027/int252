@@ -1,0 +1,3 @@
+useContext — sharing global-ish data
+
+what it is -> a way to consume context value created by -> React.createContext()

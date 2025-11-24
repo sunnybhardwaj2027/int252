@@ -1,0 +1,134 @@
+Component Lifecycle(mounting, updating, unmounting)
+
+--- in this lesson you will learn ---
+-> what happens when your component loads
+-> what happens when state changes
+-> what happens when a component is removed
+-> why Lifecycle matters in data fetching, cleanup, timers and animations etc.
+-> how Lifecycle works in => class components, functional components(using useEffect)
+--- this is very important before learning ---
+useEffect
+forms
+API calls
+Routing
+
+--- this lesson explains how react components behave over time --- how they load, update and disappear from the page
+
+1. what is component component Lifecycle? => every component goes through 3 phases 
+
+1. mounting -> component appears on the screen
+2. updating -> component re-renders due to state/props change
+3. unmounting -> component is removed from DOM
+
+its like => Birth -> life -> death
+
+2. Lifecycle in class component(old method)
+class Example extends React.Component {
+  componentDidMount() {
+    console.log("Mounted!");
+  }
+
+  componentDidUpdate() {
+    console.log("Updated!");
+  }
+
+  componentWillUnmount() {
+    console.log("Unmounted!");
+  }
+
+  render() {
+    return <h1>Hello</h1>;
+  }
+}
+
+=> but modern react uses functional component, and relies on useEffect for Lifecycle
+
+3. Lifecycle in functional component => everything is done using useEffect() hook
+
+useEffect(() => {
+  // runs on mount, update, or unmount (depending on dependencies)
+});
+
+4. useEffect -> the modern Lifecycle hook
+useEffect replaces => componentDidMount, componentDidUpdate, componentWillUnmount
+
+syntax:-
+useEffect(() => {
+    // your side effect code
+}, [dependencies]);
+
+case1 => Run only ONCE(Mounting)
+
+useEffect(() => {
+    console.log("Mounted");
+},[]); => empty dependencies -> run ONCE only
+
+--- when you need this ---
+. fetching API data when component loads
+. setting up timers
+. subscribing to evnt 
+
+case2 => Run on EVERY re-render (Mount + update)
+
+useEffect(() => {
+  console.log("component re-rendered");
+}); (No dependency array -> runs on every state change)
+
+case3 => Run when specific state changes 
+
+useEffect(() => {
+  console.log(`count changed: ${count}`);
+}, [count]);
+
+--- when you need this ---
+. form validation
+. fetch data when user selects something
+. Trigger API based on filter changes
+
+case4 => unmounting(cleanup)
+
+useEffect(() => {
+  return () => {
+    console.log("component removed!);
+  };
+}, []);
+
+--- when used for ---
+. clearing timers
+. cleaning up event listener
+. unsubscribing from websockets
+. stopping interval
+
+Example3 : cleanup(unmounting)
+useEffect(() => {
+  const timer = setInterval(() => {
+    console.log("Running...");
+  }, 1000);
+
+  return () => {
+    clearInterval(timer);
+    console.log("Timer cleared");
+  };
+}, []);
+
+summary(easy to remember)
+mount -> empty array []
+update -> add dependency
+unmount -> return cleanup function 
+everything uses useEffect in modern react
+
+🧩 Mini Exercise (Practice This)
+
+Create a component:
+
+👉 Timer.jsx
+
+Features:
+
+Mount → start a timer (count seconds)
+
+Update → display new count
+
+Unmount → stop timer
+
+I can help you build it step by step if you want.

@@ -1,0 +1,43 @@
+useEffect — side effects & lifecycle in function components
+
+--- signature ---
+useEffect(() => {
+    // effect code
+
+    return () => { /* cleanup */ };
+}, [dep1, dep2]);
+
+--- behaviour patterns ---
+. [] run once on mount, cleanup on unmount
+. [a, b] - run on mount and whenever a and b changes
+. no array - run after every render(rarely desired)
+
+Common uses
+
+. Data fetching
+
+. Subscribing/unsubscribing (WebSocket, event listeners)
+
+. Timers (setInterval, setTimeout) — must clearInterval in cleanup
+
+. Manually manipulating the DOM (rare) or integrating third-party libraries
+
+Key details & gotchas
+Stale closures: functions inside useEffect close over variables from the render when the effect was created. If you read state inside a timed callback, either include the state as dependency or use functional updates / refs.
+
+Dependencies: include all values used in the effect body that come from outer scope (props, state, functions). ESLint’s react-hooks/exhaustive-deps helps. If you intentionally omit a dependency, document why — but be cautious.
+
+Cleanup: always clean event listeners, timers, subscriptions in the returned function to avoid leaks.
+
+Async functions: effect functions cannot be async directly. Use an inner async function.
+
+Performance & ordering
+
+Multiple useEffect hooks run in insertion order after paint.
+
+Effects are asynchronous w.r.t render: they run after DOM paint (except useLayoutEffect).
+
+useLayoutEffect vs useEffect
+
+useLayoutEffect runs synchronously after DOM mutations but before paint — used for measuring DOM and making adjustments without flicker. Use sparingly (can block paint).
+
