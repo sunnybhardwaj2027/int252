@@ -66,3 +66,81 @@ await fetch("/api/users/1", {
     method: "DELETE"
 });
 
+
+3. PROBLEMS WITH FETCH() => why real developer prefer axios => fetch is fine but very raw
+
+  PROBLEM IN FETCH                                AXIOS SOLUTION
+. No Automatic JSON parsing                       Axios auto-parses JSON
+. No Automatic error handling                     Axios throws errors
+. Need to manually set headers                    Axios sets them
+. cancelling request is complex                   Axios has cancelToken
+. large config objects                            Axios instance simlifies
+
+4. AXIOS(INDUSTRY STANDARD)
+=> install => npm install axios
+
+GET:
+const req = await axios.get("/api/users");
+console.log(res.data);
+
+POST:
+await axios.post("/api/users", { name: "sunny" });
+
+PUT: 
+await axios.put("/api/users/1", { name: "new Name" });
+
+DELETE:
+await axios.delete("/api/users/1");
+
+5. ERROR HANDLING(VERY IMPORTANT) => React developers handle API errors like this:
+
+try {
+    const res = await axios.get("/api/users");
+    setUsers(res.data); 
+} catch(err) {
+    setError(err.message);
+}
+
+Always show:
+Loading...
+Error message
+Retry button(optional)
+
+6. AbortController (Senior level topic) => used to cancel request request when component unmount or user types again
+
+Ex:
+
+const controller = new AbortController();
+fetch(url, { signal : controller.signal });
+
+// cleanup
+return () => controller.abort();
+
+=> we will build a real search component later using this.
+
+7. BEST PRACTICES STRUCTURE FOR APIs => never call fetch/axios directly inside components everywhere.
+
+Create a folder  => src/services/api.js
+
+write functions:
+
+import axios from "axios";
+
+export const getusers = () => axios.get("api/users");
+export const createUser = (data) => axios.post("api/users", data);
+export const updateUser = (id, data) => axios.put(`/api/users/${id}`, data);
+export const deleteUser = (id) => axios.pus(`api/users/${id}`);
+
+Then in components
+
+useEffect(() => {
+    getusers().then(res => setUsers(res.data));
+}, []);
+
+=> this is real full-stack architecture
+
+✅ Step 1 → Axios + Error Handling + Loading UI (Deep Dive) => part2
+✅ Step 2 → Routing (React Router v6) => part3
+✅ Step 3 → Mini CRUD App (GET + POST + PUT + DELETE) => part4
+✅ Step 4 → How React Frontend Talks to Node Backend (Full MERN Flow) => part5
+

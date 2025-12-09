@@ -1,2 +1,2 @@
-lesson.js => app.js => go to file from which everthing is imported
+lesson5.js => app.js => go to file from which everthing is imported
 

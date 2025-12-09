@@ -1,0 +1,162 @@
+STEP1 => ADVANCED AXIOS + ERROR HANDLING + LOADING UI
+
+this lessong includes:
+. axios instance(production grade pattern)
+. GET with loading + error
+. POST with success + validation
+. PUT with optimistic updates 
+. DELETE with confirmation
+. Retry mechanism
+. Handling 4xx & 5xx properly
+. canceling API requests
+. Global API hanler(like professional app use)
+=> by the end, your api layer will look like company-level React code.
+
+STEP 1.1 => create an axios INSTANCE(very important) => this prevents repeating baseURL, headers, etc...
+
+create folder => src/api/axios.js
+
+code => axios.js
+
+import axios from 'axios'
+
+const api = axios.create({
+  baseURL: "https://jsonplaceholder.typicode.com",
+  timeout: 5000, // avoid hanging requests
+});
+
+// OPTIONAL => Request interceptors (adds token later)
+api.interceptors.request.use(
+  (config) => {
+    // example: config.headers.Authorization = "Bearer token"
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Response Interceptors for errors
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    console.log("API Error", error.message);
+    return Promise.reject(error);
+  }
+);
+
+export default api;
+
+all your api calls now use => api.get("/users")
+
+STEP 1.2 => GET request + with loading + error UI
+
+code => components/userAdvanced.jsx
+
+import { useState, useEffect } from 'react';
+import api from "../api/axios";
+
+const UserAdvanced = () => {
+
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  async function fetchUsers() {
+    try {
+      setLoading(true);
+      setError("");  // reset error before new request
+
+      const res = await api.get("/users");
+      setUsers(res.data);
+
+    } catch (err) {
+      setError("Failed to fetch Users. Try again.");
+      console.log(err);
+
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  if (loading) return <h2>Loading Users...</h2>;
+  if (error) return <h2 style={{ color: "red" }}>{error}</h2>;
+
+  return (
+    <div>
+      <h2>Users List</h2>
+
+      <button onClick={fetchUsers}>Refresh</button>
+
+      <ul>
+        {users.map((u) => (
+          <li key={u.id}>{u.name}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default UserAdvanced;
+
+
+=> shows:
+Loading
+error
+reload button
+clean GET request
+
+STEP 1.3 => POST Request with validation & success message
+
+create => CreatePostAdvanced.jsx
+
+import {useState} from 'react'
+import api from "../api/axios"
+
+const CreatePostAdvanced = () => {
+
+    const [title, setTitle] = useState("");
+    const [message, setMessage] = useState("");
+
+    async function handleSubmit() {
+        if(!title.trim()){
+            setMessage("Title cannot be emtpy");
+            return;
+        }
+
+        try{
+            const res = await api.post("/posts", {
+                title,
+                body: "dummy body...",
+                userId: 1
+            });
+
+            setMessage(`Post Created! ID: ${res.data.id}`);
+            setTitle("");
+        } catch {
+            setMessage("Failed to create Post");
+        }
+    }
+
+  return (
+    <div>
+      <h2>Create Post</h2>
+
+      <input placeholder='Enter title...' name="" id="" value={title} onChange={(e) => setTitle(e.target.value)} />
+      <button onClick={handleSubmit}>Create</button>
+
+      {message && <p>{message}</p>}
+    </div>
+  )
+}
+
+export default CreatePostAdvanced
+
+. shows validation
+. handles error
+. shows success rate
+
+STEP 1.4 => PUT request(Update Existing )
+
