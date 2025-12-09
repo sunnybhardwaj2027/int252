@@ -1,0 +1,107 @@
+What is useCallback in React => 'useCallback' is React hook that returns a memoized (cached) version of a function, so that the function is NOT recreated on every render.
+
+CORE IDEA: => in react, functions are recreated on every render, which can cause unnecessary re-renders in child components => useCallback helps prevent that.
+
+
+syntax:-
+
+const memoizedFunction = useCallback(() => {
+    // your logic
+}, [dependencies]);
+. react will recreate the function only when dependencies change.
+. if dependencies doesn't change --> the same function reference is reused.
+
+why do we even need useCallback?
+
+=> because react compares props by reference, not by value.
+Example:- when you pass a function to a child component.
+
+<child onClick={handleClick} />
+
+if handleClick is recreated on every render -> child component thinks props changed -> re-render again -> slow
+
+useCallback stops that by keeping the same function instance unless needed.
+
+Example Without useCallback(Child re-renders every time)
+
+Parent.jsx
+
+function Parent() {
+  const [count, setCount] = useState(0);
+
+  const handleClick = () => console.log("clicked");
+
+  return (
+    <>
+      <button onClick={() => setCount(c => c + 1)}>Increase</button>
+      <Child onClick={handleClick} />
+    </>
+  );
+}
+
+export default React.memo(Child);
+
+problem:- 
+Even if only count changes, the function handleClick is recreated -> React.memo(child) becomes useless -> Child re-renders
+
+With useCallback (Now Child won’t re-render unnecessarily)
+
+function Parent() {
+  const [count, setCount] = useState(0);
+
+  const handleClick = useCallback(() => {
+    console.log("clicked");
+  }, []); // no dependencies = stays same forever
+
+  return (
+    <>
+      <button onClick={() => setCount(c => c + 1)}>Increase</button>
+      <Child onClick={handleClick} />
+    </>
+  );
+}
+
+export default React.memo(Child);
+
+now handleClick stays same -> same reference 
+child doesn't re-render when count changes
+
+Child.jsx
+
+import React from "react";
+
+function Child({ onClick }) {
+  console.log("Child Rendered");
+  return (
+    <button onClick={onClick} style={{ marginTop: "20px" }}>
+      Child Button
+    </button>
+  );
+}
+
+// React.memo → should prevent re-render but won't!
+export default React.memo(Child);
+
+--- when to use 'useCallback' ---
+use when both components are true:
+1. you pass a function as a prop to a child component
+2. The Child component is wrapped with React.memo
+otherwise it's useless
+
+--- when not to use 'useCallback' ---
+1. inside small components
+2. when function is not passed to children
+3. just to 'look cool'
+4. overusing it can reduce performance (extra caching work)
+
+Quick Analogy => Think of react function like printing papers.
+. without useCallback => react prints a brand new paper every render.
+. with useCallback => react reuses the same paper unless something important changes.
+
+final summary:
+purpose => cache a function
+prevents => unnecessary child re-renders.
+works best with React.memo
+Re-creates function => only when dependencies changes
+Avoid using when => function not passed to child or component is small.
+

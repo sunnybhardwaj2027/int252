@@ -1,0 +1,68 @@
+HTTP METHODS + ROUTING(FULL STACK DEVELOPER LEVEL)
+
+partA -> HTTP + Data fetching in React
+
+1. what HTTP is(real web understanding)
+2. GET, POST, PUT, DELETE
+3. fetch() -> real usage
+4. Axios -> when and why to use 
+5. Async/await patterns
+6. Error handling
+7. Loading states
+8. Debouncing + throttling for API calls
+9. catching & re-fetch strategies
+10. AbortController (cancelling requests)
+11. Best folder structure(services/api.js)
+
+1. what HTTP  really is(full stack understanding)
+=> when your React app talks to backend(Node/Express), it does this:
+
+React (Frontend) ---- HTTP Request ----> Node/Express (Backend)
+React <---- HTTP Response ---- Server sends JSON
+
+--- everything happens through "HTTP METHODS": ---
+
+Method                     Purpose                      Example
+GET                       fetch Data                    fetch all posts 
+POST                      Create new Data               Add a user
+PUT/PATCH                 Update existing data          Edit profile
+DELETE                    Remove data                   Delete a todo
+
+These map EXACTLY to CRUD operations
+
+CRUD                                        HTTP Method
+Create                                      POST
+Read                                        GET
+Update                                      PUT/PATCH
+Delete                                      DELETE
+=> this is the backbone of all full stack apps.
+
+2. fetch()  --> the basic (but low-level) way
+
+GET:
+
+const res = await fetch("https://jsonplaceholder.typicode.com/posts"); => this is a pulic fake api which can work without backend set up.
+const data = await res.json();
+
+POST:
+
+await fetch("/api/users", {
+    method: "POST",
+    headers: { "content-type": "application/json"},
+    body: JSON.stringify( {name: "sunny" })
+});
+
+PUT: 
+
+await fetch("/api/users/1", {
+    method: "PUT",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify( {name : "Updated" } )
+});
+
+DELETE:
+
+await fetch("/api/users/1", {
+    method: "DELETE"
+});
+

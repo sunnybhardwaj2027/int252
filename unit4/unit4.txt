@@ -1,0 +1,90 @@
+---------------- working with forms ----------------
+
+lesson plan for unit IV:-
+
+1. controlled vs uncontrolled components
+2. Handling Inputs(text, email, number, textarea, select, checkbox, radio)
+3. form submission
+4. Handling multiple Inputs
+5. validation(front end logic)
+6. displaying Error messages
+7. Real-time validation
+8. common mistakes & best practises
+
+LESSON1 => controlled components => a components where the form Inputs value is controlled by React state
+
+Meaning:-
+. whatever you type --> stored in state
+. UI always shows what state contains.
+. state updates on every keystroke 
+
+Example:-
+
+import { useState } from "react"
+
+
+const ControlledComponentExample = () => {
+
+    const [text, setText] = useState("");
+
+  return (
+    <div>
+      <h2>{text}</h2>
+      <input type="text" value={text} onChange={(e) => setText(e.target.value)} />
+    </div>
+  )
+}
+
+export default ControlledComponentExample
+
+The input doesn't control itself => React controls it using state
+
+LESSON2 => uncontrolled components => inputs store their own value => we manually access the value using useRef.
+
+function UncontrolledExample() {
+  const inputRef = useRef();
+
+  function handleSubmit() {
+    console.log(inputRef.current.value);
+  }
+
+  return (
+    <>
+      <input ref={inputRef} />
+      <button onClick={handleSubmit}>Submit</button>
+    </>
+  );
+}
+
+
+These are useful for => large forms => performance-heavy apps => integrating with non-react libraries
+
+LESSON3 => handling form submission => react uses onSubmit
+
+import { useState } from "react";
+
+const HandleFormSubmission = () => {
+
+    const [name, setName] = useState("");
+
+    function HandleSubmit(e){
+        e.preventDefault(); // prevent page reload
+        console.log("submitted", name);
+    }
+
+  return (
+    <form onSubmit={HandleSubmit}>
+        <input 
+            value={name}
+            onChange={(e) => setName(e.target.value)} 
+        />
+        <button type="submit">Submit</button>
+    </form>
+  )
+}
+
+export default HandleFormSubmission
+
+LESSON4 => handling multiple inputs => use one object for multiple field
+
+

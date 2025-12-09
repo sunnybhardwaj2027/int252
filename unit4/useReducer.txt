@@ -1,0 +1,101 @@
+What is useReducer in React?
+=> 'useReducer' is a react hook used to manage complex state logic.
+=> it is an alternative to useState
+
+Think of it like :-
+. useState: You change state Directly.
+. useReducer: You describe HOW state should change using a 'reducer' function.
+
+=> it works just like Redux but inside a component.
+
+Syntax: 
+const [state, dispatch] = useReducer(reducer, initialState);
+
+Meaning:
+
+state => current state value
+dispatch => function to send an action
+reducer => function describing how the state updates
+initialState => starting value
+
+Reducer Function:-
+
+function reducer(state, action){
+    switch(action.type){
+        case "Increment": 
+            return {count: state.count + 1};
+        
+        case "Decrement":
+            return {count: state.count -1};
+
+        default: 
+            return state;
+    }
+}
+
+=> a reducer must always return new State, never mutate
+
+complete working example ---
+
+counter with useReducer
+CounterWithuseReducer.jsx
+
+import React from 'react'
+import { useReducer } from 'react'
+
+const initialState = { count : 0 };
+
+function reducer(state, action){
+    switch(action.type) {
+        case "Increment":
+            return { count: state.count + 1};
+        
+        case "Decrement":
+            return { count: state.count -1};
+
+        case "Reset":
+            return initialState;
+
+        default: 
+            return state;
+    }
+}
+
+const CounterWithuseReducer = () => {
+    const [state, dispatch] = useReducer(reducer , initialState);
+
+
+  return (
+    <>
+        <h1>{state.count}</h1>
+        <button style={{padding:"20px" ,margin:"20px"}} onClick={() => dispatch({ type : "Increment"})}>+</button>
+        <button style={{padding:"20px" ,margin:"20px"}} onClick={() => dispatch({ type : "Decrement"})}>-</button>
+        <button style={{padding:"20px" ,margin:"20px"}} onClick={() => dispatch({ type: "Reset"})}>Reset</button>
+    </>
+  )
+}
+
+export default CounterWithuseReducer
+
+ACTION => object that tells what to do.
+
+dispatch({ 
+    type : "Increment",
+    payload : 5 => payload is for extra data.
+})
+
+Example:- 
+case "add":
+    return { count : state.count + action.payload };
+
+WHEN TO USE useReducer INSTEAD OF useState;
+
+simple state => useState
+Multiple state values => useState
+Many updates depends upon previous state => useReducer
+complex state logic => useReducer
+Multiple actions modifying state => useReducer
+when passing state/handler deep into children => useReducer + useContext
+
+
+
