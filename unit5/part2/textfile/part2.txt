@@ -160,3 +160,141 @@ export default CreatePostAdvanced
 
 STEP 1.4 => PUT request(Update Existing )
 
+code => UpdatePostAdvanced.jsx
+
+import { useState } from 'react';
+import api from '../api/axios';
+
+const UpdatePostAdvanced = () => {
+
+    const [title, setTitle] = useState("");
+    const [result, setResult] = useState("");
+
+    async function updatePost () {
+        try{
+            const res = await api.put("/posts/1", {
+                id: 1, 
+                title,
+                body: "updated body",
+                userId: 1
+            });
+
+            setResult("Post Updated Succesfully!");
+        } catch {
+            setResult("Failed to update post");
+        }
+    }
+  return (
+    <div>
+      <h2>Update Post</h2>
+
+      <input placeholder='new title...' value={title} onChange={(e) => setTitle(e.target.value)} />
+
+      <button onClick={updatePost}>Update</button>
+
+      {result && <p>{result}</p>}
+    </div>
+  )
+}
+
+export default UpdatePostAdvanced;
+
+
+STEP 1.5 => DELETE request with confirmation 
+
+code => DeletePostAdvanced.jsx
+
+import { useState } from 'react'
+import api from '../api/axios'
+
+const DeletePostAdvanced = () => {
+
+    const [status, setStatus] = useState("");
+
+    async function deletePost() {
+        try{
+            await api.delete("/posts/1");
+            setStatus("Post deleted Successfully");
+        } catch {
+            setStatus("Failed to delete Post");
+        }
+    }
+
+  return (
+    <div>
+      <h2>Delete Post</h2>
+      <button onClick={deletePost}>Delete Post 1</button>
+      <p>{status}</p>
+    </div>
+  )
+}
+
+export default DeletePostAdvanced
+
+STEP 1.6 => CANCELING REQUESTS(REAL-TIME TYPING SEARCH)
+
+import { useEffect, useState } from "react";
+import api from "../api/axios";
+
+function SearchUsers() {
+  const [query, setQuery] = useState("");
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    if (query.length === 0) {
+      setUsers([]);
+      return;
+    }
+
+    const controller = new AbortController(); // cancel token
+
+    async function search() {
+      try {
+        const res = await api.get(`/users`, {
+          signal: controller.signal,
+        });
+        setUsers(res.data.filter(u => u.name.toLowerCase().includes(query.toLowerCase())));
+      } catch (err) {
+        if (err.name !== "CanceledError") {
+          console.log("Error:", err);
+        }
+      }
+    }
+
+    const timer = setTimeout(search, 500); // debounce
+
+    return () => {
+      controller.abort();
+      clearTimeout(timer);
+    };
+  }, [query]);
+
+  return (
+    <div>
+      <h2>Search Users</h2>
+
+      <input
+        placeholder="Search user name..."
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+      />
+
+      <ul>
+        {users.map((u) => (
+          <li key={u.id}>{u.name}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default SearchUsers;
+
+
+debounce
+cancel request
+realtime search
+cleanest pattern possible
+
+
+
