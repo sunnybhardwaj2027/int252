@@ -156,5 +156,148 @@ Add in App.jsx
 
 => Now wrong url shows 404 Page.
 
+Now you officially have the foundation of React Router build.
 
+Now we step into the REAL power of routing that full-stack develpers use.
+
+STEP 2 => DYNAMIC ROUTES (/users/:id)
+
+this is used almost every real app:
+
+This is used in almost every real app:
+
+. /products/23
+. /users/5
+. /blog/react-router-basics
+. /orders/9229113
+
+It's how you show details pages.
+
+STEP 2.1 => CREATE A DYNAMIC ROUTE
+in App.jsx => add this
+
+import UserDetail from "./page/UserDetail"
+import { BrowserRouter, Route, Routes } from "react-router-dom"
+
+function App() {
+
+  return (
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<h1>Home Page - Try going to /users/1</h1>} />
+          <Route path='/users/:id' element={ <UserDetail /> } />
+        </Routes>
+      </BrowserRouter>
+    </>
+  )
+}
+
+export default App
+
+This means:
+
+. /users/1 => UserDetail
+. /users/5 => UserDetail
+. /users/999 => UserDetail
+
+STEP 2.2 => CREATE UserDetail.jsx page
+create src/page/UserDetail.jsx
+
+import UserDetail from "./page/UserDetail"
+import { BrowserRouter, Route, Routes } from "react-router-dom"
+
+function App() {
+
+  return (
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<h1>Home Page - Try going to /users/1</h1>} />
+          <Route path='/users/:id' element={ <UserDetail /> } />
+        </Routes>
+      </BrowserRouter>
+    </>
+  )
+}
+
+export default App
+
+=> useParams() => gives you whatever is in the url
+
+STEP 3 => NAVIGATE TO DYNAMIC ROUTE
+
+create UserDetail2.jsx
+
+import { Link } from "react-router-dom";
+
+export default function UserDetail2() {
+    const users = [
+        { id: 1, name: "sunny"},
+        { id: 2, name: "Rahul"},
+        { id: 3, name: "Priya"}
+    ]
+
+    return (
+        <div>
+            <h1>Users Page</h1>
+
+            <ul>
+                {users.map((u) => (
+                    <li key={u.id}>
+                        <Link to={`/users2/${u.id}`}>
+                            {u.name}
+                        </Link>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    )
+}
+
+
+Now clicking:
+
+sunny -> /users2/1
+rahul -> /users2/2
+priya -> /users2/3
+
+And the UserDetail2 page shows the correct id
+
+*** BONUS: FETCH THE ACTUAL USER ON DETAIL PAGE ***
+create UserDetail3.jsx
+
+import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+
+export default function UserDetail3() {
+    const { id } = useParams();
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        async function fetchUser() {
+            const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`);
+            const data = await res.json();
+            setUser(data);
+        }
+
+        fetchUser();
+    }, [id]);
+
+    if(!user) {
+        return <h2>Loading...</h2>
+    }
+
+    return (
+        <div>
+            <h1>User Detail 3</h1>
+            <p>Name: {user.name}</p>
+            <p>Email: {user.email}</p>
+            <p>city: {user.address.city}</p>
+        </div>
+    )
+}
+
+this is now a real detail page
+you fetched read data based on URL ID
 
