@@ -301,3 +301,133 @@ export default function UserDetail3() {
 this is now a real detail page
 you fetched read data based on URL ID
 
+Now we will move on to :
+
+STEP 3 ---> QUERY PARAMETERS REACT ROUTER v6 (/users?sort=name&limit=10)
+
+=> used in:
+  . filters
+  . search
+  . sorting
+  . pagination
+  . dashboards
+  . admin panels
+  . etc...
+
+we will learn how to read and update query params like: /users?search=sunny&sort=name
+
+React Router gives us a hook for this:
+  const [searchParams, setSearchparams] = setSearchparams();
+
+
+Step 3.1 => Basic Query param reading
+
+create a page => src/pages/FilterUsers.jsx
+
+--- code ---
+
+import { useSearchParams } from 'react-router-dom';
+
+export default function Filterusers() {
+    const [searchParams] = useSearchParams();
+
+    const search = searchParams.get("search");
+    const sort = searchParams.get("sort");
+
+    return (
+        <div>
+            <h1>Filter Users Page</h1>
+
+            <p>Search: {search}</p>
+            <p>Sort: {sort}</p>
+        </div>
+    )
+}
+
+--- code ended ---
+
+app.jsx
+
+--- code ---
+
+import Filterusers from './pages/FilterUsers'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
+function App() {
+  
+  return (
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/filter" element={<Filterusers />}></Route>
+        </Routes>
+      </BrowserRouter>
+    </>
+  )
+}
+
+export default App
+
+--- code ended ---
+
+step 3.2 => setting query params from react (very important)
+
+code:- Usersfilter2.jsx
+
+--- code ---
+
+import { useSearchParams } from "react-router-dom";
+
+export default function FilterUsers2() {
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const search = searchParams.get("search") || "";
+    const sort = searchParams.get("sort") || "none";
+
+    function updateSearch(e) {
+        setSearchParams( {search: e.target.value, sort} );
+    }
+
+    function updateSort(e) {
+        setSearchParams( {search, sort: e.target.value} );
+    }
+
+    return (
+        <div>
+            <h1>Filter Users</h1>
+
+            <input
+            placeholder="search..."
+            value={search}
+            onChange={updateSearch}
+            />
+
+            <select value={sort} onChange={updateSort}>
+                <option value="none">None</option>
+                <option value="name">Name</option>
+                <option value="city">City</option>
+            </select>
+
+            <p><strong>Search:</strong> {search}</p>
+            <p><strong>Sort:</strong> {sort}</p>
+        </div>
+    )
+} 
+
+--- code ended ---
+
+Now type in search box --> URL updates 
+Change sort --> URL updates
+
+Example:
+  ?search=sun&sort=name
+
+why this is powerful:
+  . Because the URL becomes the single source of truth
+  so:
+    . page reload --> state is preserved
+    . Sharing URL to someone --> they see same filters
+    . Browser back/forward works perfectly
+    . No extra state management required
+    . This is how modern apps like amazon, flipkart, youtube manage filters.
+
