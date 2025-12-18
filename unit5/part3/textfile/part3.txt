@@ -511,3 +511,205 @@ Step 3.4 ---> important notes
     . when you need URL persistance
     . Example: /products?category=mobiles&sort=price 
 
+------------- STEP 4: NESTED ROUTES(PROFESSIONAL APP STRUCTURE) --------------
+
+=> nested routes are used in every modern web app:
+
+  . Admin dashboards
+  . Profile pages
+  . Product pages with tab
+  . setting pages
+  . layout with sidebar + content
+  . multi-layout apps
+
+=> you must master nested routes to build real full-stack frontends.
+
+create: ./src/pages/Dashboard.jsx
+
+--- code ---
+
+import { Link, Outlet } from "react-router-dom";
+
+export default function Dashboard() {
+    return (
+        <div style={{ display: "flex", gap: "20px"}}>
+
+            {/* Sidebar */}
+            <nav style={{ width: "200px", background: "eee", padding: "10px" }}>
+                <h3>Dashboard Menu</h3>
+
+                <ul>
+                    <li>
+                        <Link to="profile">Profile</Link>
+                    </li>
+                    <li>
+                        <Link to="settings">Settings</Link>
+                    </li>
+                    <li>
+                        <Link to="reports">Reports</Link>
+                    </li>
+                </ul>
+            </nav>
+
+            {/* Content-area */}
+            <div style={{ flex: 1, padding: "10px"}}>
+                <Outlet />
+                {/* This loads child routes content */}
+            </div>
+        </div>
+    )
+}
+
+--- code ended ---
+
+*** key concept ***
+
+<Outlet /> => means => "Show the child route here"
+
+Dashboard becomes a layout
+
+Step 4.2 --> create child pages
+
+Profile.jsx
+
+export default function Profile() {
+  return <h1>User Profile</h1>;
+}
+
+Settings.jsx
+
+export default function Profile() {
+  return <h1>Settings Page</h1>;
+}
+
+Reports.jsx
+
+export default function Profile() {
+  return <h1>Reports Page</h1>;
+}
+
+Step 4.3 --> Add Nested Routes in App.jsx
+
+--- code ---
+
+import Filterusers from './pages/FilterUsers'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import FilterUsers2 from './pages/FilterUsers2'
+import FilterUsers3 from './pages/FilterUsers3'
+import Dashboard from './pages/Dashboard'
+import Profile from './pages/Profile'
+import Settings from './pages/Settings'
+import Reports from './pages/Reports'
+import NotFound from './pages/NotFound'
+
+function App() {
+  
+  return (
+    <>
+      {/* Query params */}
+
+      {/* <BrowserRouter>
+        <Routes>
+          <Route path="/filter" element={<Filterusers />}></Route>
+          <Route path="/filter2" element={<FilterUsers2 />}></Route>
+          <Route path="/filter3" element={<FilterUsers3 />}></Route>
+        </Routes>
+      </BrowserRouter> */}
+
+      {/* Nested Dashboard Routes */}
+      <BrowserRouter>
+        <Routes>
+          <Route path='dashboard' element={ <Dashboard /> }>
+            <Route path='profile' element={ <Profile /> }></Route>
+            <Route path='settings' element={ <Settings /> }></Route>
+            <Route path='reports' element={ <Reports /> }></Route>
+          </Route>
+
+          <Route path='*' element={ <NotFound /> }></Route>
+        </Routes>
+      </BrowserRouter>
+    </>
+  )
+}
+
+export default App
+
+
+--- code ended ---
+
+*** Notice something important => child routes DO NOT start with '/' .
+
+correct:
+
+profile
+settings
+reports
+
+incorrect:
+
+/profile
+
+Step 4.4 --> Test in Browser
+
+/dashboard
+/dashboard/profile
+/dashboard/settings
+/dashboard/reports
+
+Sidebar stays 
+content changes
+layout is consistent
+No page refresh
+
+You just build a real dashboard structure
+
+. WHY NESTED ROUTES MATTERS?
+
+because real apps are not simple.
+  Real Systems use nested UI components like:
+    Dashboard
+      ├── Profile
+      ├── Settings
+      └── Orders
+          ├── Order List
+          └── Order Detail
+
+
+
+
+React router handles this beautifully.
+
+*** OPTIONAL BONUS ---> default child route ***
+
+=> inside dashboard route:
+
+<Route index element={<Profile />} /> 
+
+Now:
+/dashboard shows -> profile
+
+EXTRA BONUS --> Dynamic Nested Routes
+Example: /dashboard/orders/22
+Route:
+<Route path="orders/:orderId" element={<OrderDetail />} />
+
+Step 4 done => you now understand
+. Layouts
+. Nested routes
+. Sidebars
+. Child routing
+. <Outlet />
+. Real Dashboard architectures
+
+This is mid level frontend developer skill
+
+
+
+
+
+
+
+
+
+
+
