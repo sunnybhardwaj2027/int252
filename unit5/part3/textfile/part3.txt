@@ -431,3 +431,83 @@ why this is powerful:
     . No extra state management required
     . This is how modern apps like amazon, flipkart, youtube manage filters.
 
+Step 3.3 => Real example: Filter an API List by Query params
+  => let's make it real
+
+--- code ---
+
+import { useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+
+export default function FilterUsers3() {
+
+    const [searchParams, SetSearchParams] = useSearchParams();
+    const [users, setUsers] = useState([]);
+
+    const search = searchParams.get('search') || "";
+
+    useEffect(() => {
+        async function fetchUsers() {
+            const res = await fetch("https://jsonplaceholder.typicode.com/users");
+            const data = await res.json();
+
+            const filtered = data.filter( u => 
+                u.name.toLowerCase().inludes(search.toLowerCase())
+            );
+
+            setUsers(filtered);
+        }
+
+        fetchUsers();
+    }, [search]); // runs when search params change
+
+
+    return(
+        <div>
+            <h1>Filter User 3</h1>
+
+            <input 
+                value={search}
+                placeholder="search..."
+                onChange={(e) => SetSearchParams({ search: e.target.value})}
+            />
+
+            <ul>
+                {users.map(u => <li key={u.id}>{u.name}</li>)}
+            </ul>
+        </div>
+    )
+}
+
+--- code ended ---
+
+* when user types => URL updates
+* URL update trigger API filtering
+* UI updates automatically
+
+This is exact real-world logic used in:
+
+  . search bars
+  . dashboard filters
+  . E-commerce product filters
+  . Admin CRUD apps
+
+Step 3.4 ---> important notes
+  . Query params differ from dynamic params
+
+  Dynamic route:
+    . /users/5
+
+  Query params:
+    . /users?id=5
+
+  . when to use dynamic params?
+    . when ID identifies a SINGLE resource
+    . Example: /product/23, /blog/react-hooks
+
+  . when to use Query params?
+    . when values are optional
+    . when multiple filters must coexist
+    . when you need URL persistance
+    . Example: /products?category=mobiles&sort=price 
+
