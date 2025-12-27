@@ -204,24 +204,20 @@ This means:
 STEP 2.2 => CREATE UserDetail.jsx page
 create src/page/UserDetail.jsx
 
-import UserDetail from "./page/UserDetail"
-import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { useParams } from "react-router-dom"
 
-function App() {
+function UserDetail() {
+  const { id } = useParams();
 
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<h1>Home Page - Try going to /users/1</h1>} />
-          <Route path='/users/:id' element={ <UserDetail /> } />
-        </Routes>
-      </BrowserRouter>
+      <h1>User Detail Page</h1>
+      <p>User ID: {id}</p>
     </>
   )
 }
 
-export default App
+export default UserDetail
 
 => useParams() => gives you whatever is in the url
 

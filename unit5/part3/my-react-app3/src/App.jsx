@@ -20,9 +20,10 @@ function App() {
           <Route path="/filter2" element={<FilterUsers2 />}></Route>
           <Route path="/filter3" element={<FilterUsers3 />}></Route>
         </Routes>
-      </BrowserRouter> */}
+      </BrowserRouter>  */}
 
       {/* Nested Dashboard Routes */}
+
       <BrowserRouter>
         <Routes>
           <Route path='dashboard' element={ <Dashboard /> }>

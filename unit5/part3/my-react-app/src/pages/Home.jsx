@@ -1,8 +1,11 @@
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
 
 export default function Home() {
 
     const navigate = useNavigate();
+    const location = useLocation();
+
+    console.log(location.state);
 
     function goToUsers(){
         navigate("/users", { state: {from : "home-page"}});
