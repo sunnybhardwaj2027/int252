@@ -700,6 +700,41 @@ Step 4 done => you now understand
 This is mid level frontend developer skill
 
 
+---------------- STEP 5 --> PROTECTED ROUTES (AUTHENTICATION REQUIRED) -----------------
+
+=> React router does not have built in auth -> so we have to build it manually.
+
+This is Used in Every real App:
+  . Dashboard
+  . Profile page
+  . Admin panel
+  . Orders Page
+  . Payment Page
+  . User settings
+  . Anything behind login
+
+  => React router does not provide built-in authentication, so real developers build protected routes manually.
+
+  => the pattern i will learn here is used in real companies.
+
+
+  WHAT WE WILL bUILD 
+
+  1. AuthContext -> stores user login status
+  2. Login Page -> sets logged in user 
+  3. ProtectedRoute -> Wrapper that blocks page
+  4. Redirect user to login if NOT authenticated
+  5. Access dashboard ONLY after login
+
+This is same flow used in :
+
+. MERN apps
+. Next.js apps
+. Firebase apps
+. Token-based authentication
+
+
+
 
 
 
